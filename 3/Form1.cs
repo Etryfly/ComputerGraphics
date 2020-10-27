@@ -27,9 +27,10 @@ namespace _3
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
+                openFileDialog.Filter = "jpg files (*.jpg)|*.jpg|All files (*.*)|*.*";
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    openFileDialog.Filter = "jpg files (*.jpg)|*.jpg|All files (*.*)|*.*";
+                    
                     //Get the path of specified file
                     filePath = openFileDialog.FileName;
 
@@ -51,9 +52,9 @@ namespace _3
 
             Bitmap bitmap = new Bitmap(pictureBox1.Image);
             int r = (int)radiusUpDown.Value;
-            for (int i = 0; i < bitmap.Width; i++)
+            for (int i =0; i < bitmap.Width; i++)
             {
-                for (int j = 0; j < bitmap.Height; j++)
+                for (int j =0; j < bitmap.Height; j++)
                 {
                     bitmap.SetPixel(i,j,getMidColorInBoxByRadius(r,ref bitmap, i, j));
                 }
@@ -63,31 +64,69 @@ namespace _3
 
         }
 
+        private float matrixElementsMultiply(float[,] a, float[,] b)
+        {
+            float result = 0;
+            for (int i = 0; i < a.GetLength(0); i++)
+            {
+                for (int j = 0; j < b.GetLength(0); j++)
+                {
+                    result += a[i, j] * b[i, j];
+                }
+            }
+
+
+
+            return result;
+        }
+
         private Color getMidColorInBoxByRadius(int radius, ref Bitmap bitmap, int x, int y)
         {
+            int corrRadius = 2 * radius + 1;
+            float[,] core = new float[corrRadius, corrRadius];
+            for (int k = 0; k < corrRadius; k++)
+            {
+                for (int f = 0; f < corrRadius; f++)
+                {
+                    core[k, f] = 1f / (corrRadius * corrRadius);
+                }
+            }
+            
+            
+            float[,] R = new float[corrRadius, corrRadius];
+            float[,] G = new float[corrRadius, corrRadius];
+            float[,] B = new float[corrRadius, corrRadius];
+            float[,] A = new float[corrRadius, corrRadius];
+
             Point firstPixel = new Point(clamp(x - radius, 0, x), clamp(y - radius, 0, y));
-            Point lastPixel = new Point(clamp(x + radius, x, XMax - 1), clamp(y + radius, y, YMax - 1));
-            int r = 0, b=0, g=0,a = 0, count = 0;
+            Point lastPixel = new Point(clamp(x + radius, x, XMax - 1), clamp(y + radius, y, YMax - 1) );
+            
             int i = firstPixel.X;
             int j = firstPixel.Y;
 
-            while (j <= lastPixel.Y)
+            while (j <= lastPixel.Y )
             {
                 i = firstPixel.X;
                 while (i <= lastPixel.X)
                 {
                     var pixel = bitmap.GetPixel(i, j);
-                    r += pixel.R;
-                    g += pixel.G;
-                    b += pixel.B;
-                    a += pixel.A;
-                    count++;
+                    R[i - firstPixel.X, j - firstPixel.Y] = pixel.R;
+                    G[i - firstPixel.X, j - firstPixel.Y] = pixel.G;
+                    B[i - firstPixel.X, j - firstPixel.Y] = pixel.B;
+                    A[i - firstPixel.X, j - firstPixel.Y] = pixel.A;
                     i++;
                 }
                 j++;
             }
-
-            return Color.FromArgb(a / count, r / count, g / count, b / count);
+            int r =(int) matrixElementsMultiply(R, core);
+            int g =(int) matrixElementsMultiply(G, core);
+            int b =(int) matrixElementsMultiply(B, core);
+            int a =(int) matrixElementsMultiply(A, core);
+            r = clamp(r, 0, 255);
+            g = clamp(g, 0, 255);
+            b = clamp(b, 0, 255);
+            a = clamp(a, 0, 255);
+            return Color.FromArgb(a,r,g,b);
 
         }
 
@@ -102,9 +141,9 @@ namespace _3
         {
             Bitmap bitmap = new Bitmap(pictureBox1.Image); //TODO fix later
             int r = (int)radiusUpDown.Value;
-            for (int i = 0; i < bitmap.Width; i++)
+            for (int i =0; i < bitmap.Width; i++)
             {
-                for (int j = 0; j < bitmap.Height; j++)
+                for (int j =0; j < bitmap.Height ; j++)
                 {
                     bitmap.SetPixel(i, j, getMidColorInBoxByRadius(r, ref bitmap, i, j));
                 }
@@ -130,7 +169,7 @@ namespace _3
 
         private void brightnessButton_Click(object sender, EventArgs e)
         {
-            Bitmap bitmap = new Bitmap(pictureBox1.Image); //TODO fix later
+            Bitmap bitmap = new Bitmap(pictureBox1.Image);
             int n = (int)nUpDown.Value;
             for (int i = 0; i < bitmap.Width; i++)
             {
@@ -144,7 +183,7 @@ namespace _3
 
         private void contrastButton_Click(object sender, EventArgs e)
         {
-            Bitmap bitmap = new Bitmap(pictureBox1.Image); //TODO fix later
+            Bitmap bitmap = new Bitmap(pictureBox1.Image); 
             int n = (int)nUpDown.Value;
             for (int i = 0; i < bitmap.Width; i++)
             {
