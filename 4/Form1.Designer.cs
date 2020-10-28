@@ -31,6 +31,11 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.resizeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.moveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.отражениеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.XToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.YToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.XYToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -47,7 +52,9 @@
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.resizeMenuItem});
+            this.resizeMenuItem,
+            this.moveToolStripMenuItem,
+            this.отражениеToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(800, 24);
@@ -60,6 +67,44 @@
             this.resizeMenuItem.Size = new System.Drawing.Size(118, 20);
             this.resizeMenuItem.Text = "Маштабирование";
             this.resizeMenuItem.Click += new System.EventHandler(this.resizeMenuItem_Click);
+            // 
+            // moveToolStripMenuItem
+            // 
+            this.moveToolStripMenuItem.Name = "moveToolStripMenuItem";
+            this.moveToolStripMenuItem.Size = new System.Drawing.Size(67, 20);
+            this.moveToolStripMenuItem.Text = "Перенос";
+            this.moveToolStripMenuItem.Click += new System.EventHandler(this.moveToolStripMenuItem_Click);
+            // 
+            // отражениеToolStripMenuItem
+            // 
+            this.отражениеToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.XToolStripMenuItem,
+            this.YToolStripMenuItem,
+            this.XYToolStripMenuItem});
+            this.отражениеToolStripMenuItem.Name = "отражениеToolStripMenuItem";
+            this.отражениеToolStripMenuItem.Size = new System.Drawing.Size(81, 20);
+            this.отражениеToolStripMenuItem.Text = "Отражение";
+            // 
+            // XToolStripMenuItem
+            // 
+            this.XToolStripMenuItem.Name = "XToolStripMenuItem";
+            this.XToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.XToolStripMenuItem.Text = "Относительно X";
+            this.XToolStripMenuItem.Click += new System.EventHandler(this.XToolStripMenuItem_Click);
+            // 
+            // YToolStripMenuItem
+            // 
+            this.YToolStripMenuItem.Name = "YToolStripMenuItem";
+            this.YToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.YToolStripMenuItem.Text = "Относительно Y";
+            this.YToolStripMenuItem.Click += new System.EventHandler(this.YToolStripMenuItem_Click);
+            // 
+            // XYToolStripMenuItem
+            // 
+            this.XYToolStripMenuItem.Name = "XYToolStripMenuItem";
+            this.XYToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.XYToolStripMenuItem.Text = "Относительно Y=X ";
+            this.XYToolStripMenuItem.Click += new System.EventHandler(this.XYToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -84,6 +129,11 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem resizeMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem moveToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem отражениеToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem XToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem YToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem XYToolStripMenuItem;
     }
 }
 

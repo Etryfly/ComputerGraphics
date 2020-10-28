@@ -70,9 +70,13 @@ namespace _4
             center.Y = pictureBox1.Size.Height / 2;
             
             DrawAxis(e.Graphics);
+            SolidBrush solidBrush = new SolidBrush(
+            Color.FromArgb(255, 255, 0, 0));
+            
             for (int i = 0; i < figures.Count; i++)
             {
                 e.Graphics.DrawPolygon(new Pen(Brushes.Black),Centrate(figures[i]));
+                e.Graphics.FillPolygon(solidBrush, Centrate(figures[i]));
             }
            
             
@@ -94,6 +98,50 @@ namespace _4
             for (int i = 0; i < points.Length; i++)
             {
                 result[i] = Resize(points[i], mx, my);
+            }
+
+            return result;
+        }
+
+        private PointF Move(PointF point, float x, float y)
+        {
+            float[,] matrix = new float[3, 3] { { 1, 0, 0 }, { 0, 1, 0 }, { x, y, 1 } };
+            float[,] input = new float[1, 3] { { point.X, point.Y, 1 } };
+            float[,] result = Multiply(input, matrix);
+            return new PointF(result[0, 0], result[0, 1]);
+        }
+
+
+
+        private PointF[] Move(PointF[] points, float mx, float my)
+        {
+            PointF[] result = new PointF[points.Length];
+            for (int i = 0; i < points.Length; i++)
+            {
+                result[i] = Move(points[i], mx, my);
+            }
+
+            return result;
+        }
+
+        private PointF Reflect(PointF point, float alpha)
+        {
+            float cos = (float)Math.Cos(2 * alpha);
+            float sin = (float)Math.Sin(2 * alpha);
+            float[,] matrix = new float[3, 3] { {cos , sin, 0 }, { sin, -cos, 0 }, { 0, 0, 1 } };
+            float[,] input = new float[1, 3] { { point.X, point.Y, 1 } };
+            float[,] result = Multiply(input, matrix);
+            return new PointF(result[0, 0], result[0, 1]);
+        }
+
+
+
+        private PointF[] Reflect(PointF[] points, float alpha)
+        {
+            PointF[] result = new PointF[points.Length];
+            for (int i = 0; i < points.Length; i++)
+            {
+                result[i] = Reflect(points[i], alpha);
             }
 
             return result;
@@ -150,6 +198,71 @@ namespace _4
             pictureBox1.Invalidate();
            
            
+        }
+
+       
+
+        private void moveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MoveForm form = new MoveForm();
+            form.ShowDialog();
+            float X = form.X ;
+            float Y = form.Y * (-1) ;
+
+            for (int i = 0; i < figures.Count; i++)
+            {
+                PointF[] movedFig = Move(figures[i], X, Y);
+                //resizedFig = Centrate(resizedFig);
+                figures[i] = movedFig;
+
+            }
+
+            pictureBox1.Invalidate();
+        }
+
+        private void XToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            float alpha = 0;
+
+            for (int i = 0; i < figures.Count; i++)
+            {
+                PointF[] movedFig = Reflect(figures[i], alpha);
+                //resizedFig = Centrate(resizedFig);
+                figures[i] = movedFig;
+
+            }
+
+            pictureBox1.Invalidate();
+        }
+
+        private void YToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            float alpha = (float) Math.PI / 2;
+
+            for (int i = 0; i < figures.Count; i++)
+            {
+                PointF[] movedFig = Reflect(figures[i], alpha);
+                //resizedFig = Centrate(resizedFig);
+                figures[i] = movedFig;
+
+            }
+
+            pictureBox1.Invalidate();
+        }
+
+        private void XYToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            float alpha = (float) -Math.PI / 4;
+
+            for (int i = 0; i < figures.Count; i++)
+            {
+                PointF[] movedFig = Reflect(figures[i], alpha);
+                //resizedFig = Centrate(resizedFig);
+                figures[i] = movedFig;
+
+            }
+
+            pictureBox1.Invalidate();
         }
     }
 }
