@@ -19,15 +19,7 @@ namespace _4
            
             center.X = pictureBox1.Size.Width / 2;
             center.Y = pictureBox1.Size.Height / 2;
-            figures = getStartFigures();
-            for (int i = 0; i < figures.Count; i++)
-            {
-                for (int j = 0; j < figures[i].Length; j++)
-                {
-                    figures[i][j].Y *= -1;
-                }
-                
-            }
+            Reset();
             /*PointF[] resizedFig1 = Resize(figures[0], 10, 10);
             PointF[] resizedFig2 = Resize(figures[1], 10, 10);
             figures[0] = resizedFig1;
@@ -142,6 +134,29 @@ namespace _4
             for (int i = 0; i < points.Length; i++)
             {
                 result[i] = Reflect(points[i], alpha);
+            }
+
+            return result;
+        }
+
+        private PointF Rotate(PointF point, float alpha)
+        {
+            float cos = (float)Math.Cos( alpha);
+            float sin = (float)Math.Sin( alpha);
+            float[,] matrix = new float[3, 3] { { cos, sin, 0 }, { -sin, cos, 0 }, { 0, 0, 1 } };
+            float[,] input = new float[1, 3] { { point.X, point.Y, 1 } };
+            float[,] result = Multiply(input, matrix);
+            return new PointF(result[0, 0], result[0, 1]);
+        }
+
+
+
+        private PointF[] Rotate(PointF[] points, float alpha)
+        {
+            PointF[] result = new PointF[points.Length];
+            for (int i = 0; i < points.Length; i++)
+            {
+                result[i] = Rotate(points[i], alpha);
             }
 
             return result;
@@ -262,6 +277,61 @@ namespace _4
 
             }
 
+            pictureBox1.Invalidate();
+        }
+
+        private void CenterToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Rotate form = new Rotate();
+            form.ShowDialog();
+            float alpha = (float)((form.Phi * Math.PI) / 180);
+
+            for (int i = 0; i < figures.Count; i++)
+            {
+                PointF[] movedFig = Rotate(figures[i], alpha);
+                //resizedFig = Centrate(resizedFig);
+                figures[i] = movedFig;
+
+            }
+
+            pictureBox1.Invalidate();
+        }
+
+        private void PointToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RotatePointForm form = new RotatePointForm();
+            form.ShowDialog();
+            float alpha = (float)((form.Angle * Math.PI) / 180);
+            float X = form.X;
+            float Y = form.Y;
+
+            for (int i = 0; i < figures.Count; i++)
+            {
+                PointF[] movedFig = Move(figures[i], -X, -Y);
+                //resizedFig = Centrate(resizedFig);
+                figures[i] = Move(Rotate(movedFig, alpha), X,Y);
+
+            }
+
+            pictureBox1.Invalidate();
+        }
+
+        private void Reset()
+        {
+            figures = getStartFigures();
+            for (int i = 0; i < figures.Count; i++)
+            {
+                for (int j = 0; j < figures[i].Length; j++)
+                {
+                    figures[i][j].Y *= -1;
+                }
+
+            }
+        }
+
+        private void ResetToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Reset();
             pictureBox1.Invalidate();
         }
     }
