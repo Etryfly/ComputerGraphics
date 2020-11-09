@@ -76,8 +76,9 @@
             // масштToolStripMenuItem
             // 
             this.масштToolStripMenuItem.Name = "масштToolStripMenuItem";
-            this.масштToolStripMenuItem.Size = new System.Drawing.Size(124, 20);
-            this.масштToolStripMenuItem.Text = "Масштабирование";
+            this.масштToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
+            this.масштToolStripMenuItem.Size = new System.Drawing.Size(161, 20);
+            this.масштToolStripMenuItem.Text = "Масштабирование(ctrl+r)";
             this.масштToolStripMenuItem.Click += new System.EventHandler(this.ResizeButtonOnClick);
             // 
             // проекцияToolStripMenuItem
@@ -93,29 +94,33 @@
             // центральнаяОдноточечнаяToolStripMenuItem
             // 
             this.центральнаяОдноточечнаяToolStripMenuItem.Name = "центральнаяОдноточечнаяToolStripMenuItem";
-            this.центральнаяОдноточечнаяToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
+            this.центральнаяОдноточечнаяToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
+            this.центральнаяОдноточечнаяToolStripMenuItem.Size = new System.Drawing.Size(282, 22);
             this.центральнаяОдноточечнаяToolStripMenuItem.Text = "Центральная одноточечная";
             this.центральнаяОдноточечнаяToolStripMenuItem.Click += new System.EventHandler(this.CentralProjectionOnClick);
             // 
             // ортогональнаяПараллельнаяToolStripMenuItem
             // 
             this.ортогональнаяПараллельнаяToolStripMenuItem.Name = "ортогональнаяПараллельнаяToolStripMenuItem";
-            this.ортогональнаяПараллельнаяToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
+            this.ортогональнаяПараллельнаяToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
+            this.ортогональнаяПараллельнаяToolStripMenuItem.Size = new System.Drawing.Size(282, 22);
             this.ортогональнаяПараллельнаяToolStripMenuItem.Text = "Ортогональная параллельная";
             this.ортогональнаяПараллельнаяToolStripMenuItem.Click += new System.EventHandler(this.OrthProjectionOnClick);
             // 
             // ObliqueProjMenu
             // 
             this.ObliqueProjMenu.Name = "ObliqueProjMenu";
-            this.ObliqueProjMenu.Size = new System.Drawing.Size(240, 22);
+            this.ObliqueProjMenu.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.J)));
+            this.ObliqueProjMenu.Size = new System.Drawing.Size(282, 22);
             this.ObliqueProjMenu.Text = "Косоугольная";
             this.ObliqueProjMenu.Click += new System.EventHandler(this.ObliqueProjectionOnClick);
             // 
             // переносToolStripMenuItem
             // 
             this.переносToolStripMenuItem.Name = "переносToolStripMenuItem";
-            this.переносToolStripMenuItem.Size = new System.Drawing.Size(67, 20);
-            this.переносToolStripMenuItem.Text = "Перенос";
+            this.переносToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
+            this.переносToolStripMenuItem.Size = new System.Drawing.Size(106, 20);
+            this.переносToolStripMenuItem.Text = "Перенос(ctrl+e)";
             this.переносToolStripMenuItem.Click += new System.EventHandler(this.MoveOnClick);
             // 
             // отразитьToolStripMenuItem
@@ -131,6 +136,7 @@
             // yZToolStripMenuItem
             // 
             this.yZToolStripMenuItem.Name = "yZToolStripMenuItem";
+            this.yZToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.J)));
             this.yZToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.yZToolStripMenuItem.Text = "YZ";
             this.yZToolStripMenuItem.Click += new System.EventHandler(this.yZToolStripMenuItem_Click);
@@ -138,6 +144,7 @@
             // yXToolStripMenuItem
             // 
             this.yXToolStripMenuItem.Name = "yXToolStripMenuItem";
+            this.yXToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
             this.yXToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.yXToolStripMenuItem.Text = "YX";
             this.yXToolStripMenuItem.Click += new System.EventHandler(this.yXToolStripMenuItem_Click);
@@ -145,6 +152,7 @@
             // zXToolStripMenuItem
             // 
             this.zXToolStripMenuItem.Name = "zXToolStripMenuItem";
+            this.zXToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
             this.zXToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.zXToolStripMenuItem.Text = "ZX";
             this.zXToolStripMenuItem.Click += new System.EventHandler(this.zXToolStripMenuItem_Click);
@@ -162,6 +170,7 @@
             // xToolStripMenuItem
             // 
             this.xToolStripMenuItem.Name = "xToolStripMenuItem";
+            this.xToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.A)));
             this.xToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.xToolStripMenuItem.Text = "X";
             this.xToolStripMenuItem.Click += new System.EventHandler(this.xToolStripMenuItem_Click);
@@ -169,6 +178,7 @@
             // yToolStripMenuItem
             // 
             this.yToolStripMenuItem.Name = "yToolStripMenuItem";
+            this.yToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.B)));
             this.yToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.yToolStripMenuItem.Text = "Y";
             this.yToolStripMenuItem.Click += new System.EventHandler(this.yToolStripMenuItem_Click);
@@ -176,6 +186,7 @@
             // zToolStripMenuItem
             // 
             this.zToolStripMenuItem.Name = "zToolStripMenuItem";
+            this.zToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.C)));
             this.zToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.zToolStripMenuItem.Text = "Z";
             this.zToolStripMenuItem.Click += new System.EventHandler(this.zToolStripMenuItem_Click);
@@ -183,8 +194,9 @@
             // восстановитьИсходноеToolStripMenuItem
             // 
             this.восстановитьИсходноеToolStripMenuItem.Name = "восстановитьИсходноеToolStripMenuItem";
-            this.восстановитьИсходноеToolStripMenuItem.Size = new System.Drawing.Size(152, 20);
-            this.восстановитьИсходноеToolStripMenuItem.Text = "Восстановить исходное ";
+            this.восстановитьИсходноеToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.R)));
+            this.восстановитьИсходноеToolStripMenuItem.Size = new System.Drawing.Size(185, 20);
+            this.восстановитьИсходноеToolStripMenuItem.Text = "Восстановить исходное(alt+r) ";
             this.восстановитьИсходноеToolStripMenuItem.Click += new System.EventHandler(this.ResetOnClick);
             // 
             // Form1
