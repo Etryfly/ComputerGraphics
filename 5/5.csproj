@@ -71,6 +71,12 @@
     <Compile Include="Dialogs\ResizeForm.Designer.cs">
       <DependentUpon>ResizeForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\RotateForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\RotateForm.Designer.cs">
+      <DependentUpon>RotateForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Projections\CentralProjection.cs" />
     <Compile Include="Projections\ObliqueProjection.cs" />
     <Compile Include="Projections\OrthogonalProjection.cs" />
@@ -92,6 +98,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\ObliqueProjectionForm.resx">
       <DependentUpon>ObliqueProjectionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\RotateForm.resx">
+      <DependentUpon>RotateForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

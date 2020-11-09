@@ -131,6 +131,72 @@ namespace _5
             figures = ApplyMatrixToFigures(matrix);
         }
 
+        public void ReflectYZ()
+        {
+            float[,] matrix = new float[4, 4] { { -1, 0, 0 ,0 },
+                                               { 0, 1, 0 ,0 },
+                                               { 0, 0, 1 ,0 },
+                                               { 0, 0, 0 , 1 }};
+
+            figures = ApplyMatrixToFigures(matrix);
+        }
+
+        public void ReflectYX()
+        {
+            float[,] matrix = new float[4, 4] { { 1, 0, 0 ,0 },
+                                               { 0, 1, 0 ,0 },
+                                               { 0, 0, -1 ,0 },
+                                               { 0, 0, 0 , 1 }};
+
+            figures = ApplyMatrixToFigures(matrix);
+        }
+
+        public void ReflectZX()
+        {
+            float[,] matrix = new float[4, 4] { { 1, 0, 0 ,0 },
+                                               { 0, -1, 0 ,0 },
+                                               { 0, 0, 1 ,0 },
+                                               { 0, 0, 0 , 1 }};
+
+            figures = ApplyMatrixToFigures(matrix);
+        }
+
+        public void RotateZ(float a)
+        {
+            float cos = (float)Math.Cos(a);
+            float sin = (float)Math.Sin(a);
+            float[,] matrix = new float[4, 4] { { cos, sin, 0 ,0 },
+                                               { -sin, cos, 0 ,0 },
+                                               { 0, 0, 1 ,0 },
+                                               { 0, 0, 0 , 1 }};
+
+            figures = ApplyMatrixToFigures(matrix);
+        }
+
+        public void RotateX(float a)
+        {
+            float cos = (float)Math.Cos(a);
+            float sin = (float)Math.Sin(a);
+            float[,] matrix = new float[4, 4] { { 1, 0, 0 ,0 },
+                                               { 0, cos, sin ,0 },
+                                               { 0, -sin, cos ,0 },
+                                               { 0, 0, 0 , 1 }};
+
+            figures = ApplyMatrixToFigures(matrix);
+        }
+
+        public void RotateY(float a)
+        {
+            float cos = (float)Math.Cos(a);
+            float sin = (float)Math.Sin(a);
+            float[,] matrix = new float[4, 4] { { cos, 0, -sin ,0 },
+                                               { 0, 1, 0 ,0 },
+                                               { sin, 0, cos ,0 },
+                                               { 0, 0, 0 , 1 }};
+
+            figures = ApplyMatrixToFigures(matrix);
+        }
+
         public float[] Points3DToABCDMatrix(Point3D[] points)
         {
             if (points.Length < 3) throw new ArgumentException();

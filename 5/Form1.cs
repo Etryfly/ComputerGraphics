@@ -135,5 +135,54 @@ namespace _5
             utils.Move(form.X, form.Y, form.Z);
             pictureBox1.Invalidate();
         }
+
+        private void yZToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            utils.ReflectYZ();
+            pictureBox1.Invalidate();
+        }
+
+        private void yXToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            utils.ReflectYX();
+            pictureBox1.Invalidate();
+        }
+
+        private void zXToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            utils.ReflectZX();
+            pictureBox1.Invalidate();
+        }
+
+        private void xToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RotateForm form = new RotateForm();
+            form.ShowDialog();
+            utils.RotateX(form.Angle);
+            pictureBox1.Invalidate();
+        }
+
+        private void yToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RotateForm form = new RotateForm();
+            form.ShowDialog();
+            utils.RotateY(form.Angle);
+            pictureBox1.Invalidate();
+        }
+
+        private void zToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RotateForm form = new RotateForm();
+            form.ShowDialog();
+            utils.RotateZ(form.Angle);
+            pictureBox1.Invalidate();
+        }
+
+        private void ResetOnClick(object sender, EventArgs e)
+        {
+            utils.setFigures(getDefaultObject());
+            utils.Resize(20, 20, 20);
+            pictureBox1.Invalidate();
+        }
     }
 }
