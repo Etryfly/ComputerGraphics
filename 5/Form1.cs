@@ -87,13 +87,17 @@ namespace _5
                 ObliqueProjection proj = projection as ObliqueProjection;
                 figuresForDraw = utils.getObliqueProjection(proj.getAlpha(), proj.getL());
             }
-
+          //  float[,] pov = new float[1,4] { { 0, 0,1, 1 } };
+           // float[,] visabilityMatrix = utils.getVisibilityMatrix(pov);
             Color[] colors = utils.getFiguresColors();
             for (int i = 0; i < figuresForDraw.Count; i++)
             {
-                SolidBrush solidBrush = new SolidBrush(colors[i]);
-                g.DrawPolygon(new Pen(Brushes.Black), Centrate(figuresForDraw[i]));
-                g.FillPolygon(solidBrush, Centrate(figuresForDraw[i]));
+              //  if (visabilityMatrix[0,i] >  0)
+               // {
+                    SolidBrush solidBrush = new SolidBrush(colors[i]);
+                    g.DrawPolygon(new Pen(Brushes.Black), Centrate(figuresForDraw[i]));
+                    g.FillPolygon(solidBrush, Centrate(figuresForDraw[i]));
+               // }
             }
         }
 

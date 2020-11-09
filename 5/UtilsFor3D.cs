@@ -32,6 +32,34 @@ namespace _5
             figures = ApplyMatrixToFigures(matrix);
         }
 
+        public float[,] getVisibilityMatrix(float[,] pointOfView)
+        {
+            float[,] V = new float[4, figures.Count];
+
+            for (int i = 0; i < figures.Count; i++)
+            {
+                float[] ABCD = Points3DToABCDMatrix(figures[i]);
+               if (ABCD[3] != 0)
+                {
+                    ABCD[0] /= ABCD[3];
+                    ABCD[1] /= ABCD[3];
+                    ABCD[2] /= ABCD[3];
+                }  /* else
+                {
+                    ABCD[3] = 1;
+                }
+                */
+                for (int j = 0; j < 4; j++)
+                {
+                    V[j, i] = ABCD[j];
+                }
+            }
+
+            return Dot(pointOfView, V);
+
+            
+        }
+
         public List<Point3D[]> ApplyMatrixToFigures(float[,] matrix)
         {
             List<Point3D[]> result = new List<Point3D[]>();
@@ -214,11 +242,10 @@ namespace _5
             float C = x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2);
             float D = -x1 * (y2 * z3 - y3 * z2) - x2 * (y3 * z1 - y1 * z3) - x3 * (y1 * z2 - y2 * z1);
             float[] result = new float[4];
-           
             result[0] = A ;
-            result[1] = B ;
+            result[1] = B;
             result[2] = C ;
-            result[3] = D ;
+            result[3] = D;
             return result;
         }
 
@@ -227,7 +254,7 @@ namespace _5
              int c = (int)(Math.Abs(abcd[0]) + Math.Abs(abcd[1]) + Math.Abs(abcd[2]) + Math.Abs(abcd[3])) ;
             //int c = (int)(Math.Ababcd[0] + abcd[1] + abcd[2] + abcd[3]);
             c %= 255;
-            return Color.FromArgb(c, c, 0, c);
+            return Color.FromArgb(c, c,0, c);
         }
 
         public Color[] getFiguresColors()

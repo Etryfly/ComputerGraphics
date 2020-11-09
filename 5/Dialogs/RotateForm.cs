@@ -21,7 +21,7 @@ namespace _5.Dialogs
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Angle = (float)(float.Parse(textBox1.Text) * 180 / Math.PI);
+            Angle = (float)((float.Parse(textBox1.Text) * Math.PI) / 180);
             Close();
         }
     }

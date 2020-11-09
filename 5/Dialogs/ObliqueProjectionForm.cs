@@ -21,7 +21,7 @@ namespace _5.Dialogs
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Alpha = float.Parse(AlphaTextBox.Text) * 180 / (float) Math.PI;
+            Alpha = (float)((float.Parse(AlphaTextBox.Text) *  Math.PI) / 180);
             L = float.Parse(LTextBox.Text);
             Close();
         }
