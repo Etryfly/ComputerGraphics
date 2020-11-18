@@ -27,40 +27,62 @@ namespace _6
 
         int count = 60;
 
+        bool hide = false;
+
         private void pictureBoxOnPaint(object sender, PaintEventArgs e)
         {
+            int option = comboBox1.SelectedIndex;
             Utils3D utils = new Utils3D();
             utils.Init(minX, minY, maxX, maxY,count);
-            utils.RotateZ((float)(30 *Math.PI / 180));
-            utils.RotateX((float)(40 *Math.PI / 180));
+           // utils.RotateZ((float)(30 *Math.PI / 180));
+           // utils.RotateX((float)(30 *Math.PI / 180));
+            // utils.plotWithRemove(e.Graphics);
             //utils.RotateY(30);
-            List<Point[]> curves = utils.getXZProj();
+
+            Point center = new Point(pictureBox1.Width / 2, pictureBox1.Height / 2);
+
+            List<Point[]> curves;
+            if (!hide);
+           
             Pen pen = new Pen(Color.Black);
-            if (xLines)
+          
+
+            switch (option)
             {
-                for (int i = 0; i < curves.Count; i++)
-                {
-                    for (int j = 0; j < curves[i].Length - 1; j++)
+                case 0:
                     {
-                        e.Graphics.DrawLine(pen, Centrate(curves[i][j]), Centrate(curves[i][j + 1]));
+                        curves = utils.getXZProj();
+                        for (int i = 0; i < curves.Count; i++)
+                        {
+                            for (int j = 0; j < curves[i].Length - 1; j++)
+                            {
+                                e.Graphics.DrawLine(pen, Centrate(curves[i][j]), Centrate(curves[i][j + 1]));
 
+                            }
+
+                        }
                     }
+                    break;
 
-                }
-            }
-
-            if (yLines)
-            {
-                for (int i = 0; i < curves.Count - 1; i++)
-                {
-                    for (int j = 0; j < curves[i].Length; j++)
+                case 1:
                     {
+                        curves = utils.getProjWithRemovedLines(e.Graphics, center.X, center.Y);
+                        for (int i = 0; i < curves.Count; i++)
+                        {
+                            for (int j = 0; j < curves[i].Length - 1; j++)
+                            {
+                                e.Graphics.DrawLine(pen, Centrate(curves[i][j]), Centrate(curves[i][j + 1]));
 
-                        e.Graphics.DrawLine(pen, Centrate(curves[i][j]), Centrate(curves[i + 1][j]));
+                            }
+
+                        }
                     }
+                    break;
 
-                }
             }
+           
+
+           
         }
 
        
@@ -73,11 +95,6 @@ namespace _6
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (XcheckBox.Checked) xLines = true;
-            else xLines = false;
-
-            if (YcheckBox.Checked) yLines = true;
-            else yLines = false;
 
             count = int.Parse(countTextBox.Text);
             minX = int.Parse(MinXText.Text);

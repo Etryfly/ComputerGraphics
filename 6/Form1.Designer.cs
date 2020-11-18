@@ -29,8 +29,6 @@
         private void InitializeComponent()
         {
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.XcheckBox = new System.Windows.Forms.CheckBox();
-            this.YcheckBox = new System.Windows.Forms.CheckBox();
             this.countTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
@@ -42,6 +40,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -53,28 +52,6 @@
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBoxOnPaint);
-            // 
-            // XcheckBox
-            // 
-            this.XcheckBox.AutoSize = true;
-            this.XcheckBox.Checked = true;
-            this.XcheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.XcheckBox.Location = new System.Drawing.Point(765, 56);
-            this.XcheckBox.Name = "XcheckBox";
-            this.XcheckBox.Size = new System.Drawing.Size(33, 17);
-            this.XcheckBox.TabIndex = 1;
-            this.XcheckBox.Text = "X";
-            this.XcheckBox.UseVisualStyleBackColor = true;
-            // 
-            // YcheckBox
-            // 
-            this.YcheckBox.AutoSize = true;
-            this.YcheckBox.Location = new System.Drawing.Point(765, 104);
-            this.YcheckBox.Name = "YcheckBox";
-            this.YcheckBox.Size = new System.Drawing.Size(33, 17);
-            this.YcheckBox.TabIndex = 2;
-            this.YcheckBox.Text = "Y";
-            this.YcheckBox.UseVisualStyleBackColor = true;
             // 
             // countTextBox
             // 
@@ -95,7 +72,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(764, 369);
+            this.button1.Location = new System.Drawing.Point(764, 420);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(100, 23);
             this.button1.TabIndex = 7;
@@ -171,11 +148,25 @@
             this.label5.TabIndex = 15;
             this.label5.Text = "MaxY";
             // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "Без сокрытия",
+            "Плавающий горизонт",
+            "Сетка",
+            "Полутон"});
+            this.comboBox1.Location = new System.Drawing.Point(764, 72);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(121, 21);
+            this.comboBox1.TabIndex = 18;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(887, 581);
+            this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -187,8 +178,6 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.countTextBox);
-            this.Controls.Add(this.YcheckBox);
-            this.Controls.Add(this.XcheckBox);
             this.Controls.Add(this.pictureBox1);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -201,8 +190,6 @@
         #endregion
 
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.CheckBox XcheckBox;
-        private System.Windows.Forms.CheckBox YcheckBox;
         private System.Windows.Forms.TextBox countTextBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button1;
@@ -214,6 +201,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox comboBox1;
     }
 }
 
