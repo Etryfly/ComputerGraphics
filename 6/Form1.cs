@@ -49,7 +49,7 @@ namespace _6
             {
                 case 0:
                     {
-                        curves = utils.getXZProj();
+                        curves = utils.getXZFiguresProj();
                         for (int i = 0; i < curves.Count; i++)
                         {
                             for (int j = 0; j < curves[i].Length - 1; j++)
@@ -79,7 +79,7 @@ namespace _6
 
 
                 case 2:
-                    curves = utils.getXZProj();
+                    curves = utils.getXZFiguresProj();
                     for (int i = 0; i < curves.Count; i++)
                     {
                         for (int j = 0; j < curves[i].Length - 1; j++)

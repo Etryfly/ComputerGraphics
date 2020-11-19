@@ -15,11 +15,18 @@ namespace _6
         float minX, minZ, maxX, maxZ;
         public bool hide = false;
         private List<Point3D[]> figures = new List<Point3D[]>();
+        private List<Point3D[]> axis = new List<Point3D[]>();
 
         public List<Point3D[]> ApplyMatrixToFigures(float[,] matrix)
         {
+            return ApplyMatrix(matrix, figures);
+
+        }
+
+        public List<Point3D[]> ApplyMatrix(float[,] matrix, List<Point3D[]> point3Ds)
+        {
             List<Point3D[]> result = new List<Point3D[]>();
-            foreach (Point3D[] points in figures)
+            foreach (Point3D[] points in point3Ds)
             {
                 Point3D[] newPoints = new Point3D[points.Length];
                 for (int i = 0; i < points.Length; i++)
@@ -38,16 +45,32 @@ namespace _6
             return (float)(Math.Cos(x) *2* Math.Sin(y));
         }
 
+        private void InitAxis(float size)
+        {
+            Point3D[] x = new Point3D[2];
+            Point3D[] y = new Point3D[2];
+            Point3D[] z = new Point3D[2];
+            x[0] = new Point3D(-size, 0, 0);
+            x[1] = new Point3D(size, 0, 0);
+            y[1] = new Point3D(0, -size, 0);
+            y[0] = new Point3D(0, size, 0);
+            z[0] = new Point3D(0, 0, -size);
+            z[1] = new Point3D(0, 0, size);
+
+            axis.Add(x);
+            axis.Add(y);
+            axis.Add(z);
+        }
+
         public void Init(float leftX, float leftY, float rightX, float rightY, int count)
         {
+            InitAxis(rightY - leftY);
             float d = (rightX - leftX) / count;
-           // minX = leftX;
-           // float d = 6.66F;
-            Debug.WriteLine(d);
+           
             for (float i = leftX; i < rightX; i+= d)
             {
                 List<Point3D> points = new List<Point3D>();
-                for (float j = leftY; j < rightY; j+=0.01F)
+                for (float j = leftY; j < rightY; j+=1F)
                 {
                     Point3D point = new Point3D();
                     point.X = i;
@@ -59,9 +82,9 @@ namespace _6
             }
 
            // Smooth();
-            ResizeZ(20);
-            ResizeX(20);
-            ResizeY(20);
+            ResizeZ(10);
+            ResizeX(10);
+            ResizeY(10);
         }
 
       
@@ -81,7 +104,10 @@ namespace _6
                                                { 0, 0, 0 , 1 }};
 
             figures = ApplyMatrixToFigures(matrix);
+            axis = ApplyMatrix(matrix, axis);
         }
+
+      
 
         public void ResizeX(int x)
         {
@@ -91,6 +117,7 @@ namespace _6
                                                { 0, 0, 0 , 1 }};
 
             figures = ApplyMatrixToFigures(matrix);
+            axis = ApplyMatrix(matrix, axis);
         }
 
         public void ResizeY(int y)
@@ -101,6 +128,7 @@ namespace _6
                                                { 0, 0, 0 , 1 }};
 
             figures = ApplyMatrixToFigures(matrix);
+            axis = ApplyMatrix(matrix, axis);
         }
 
         private Point3D floatArrToPoint3D(float[,] point)
@@ -161,6 +189,7 @@ namespace _6
                                                { 0, 0, 0 , 1 }};
 
             figures = ApplyMatrixToFigures(matrix);
+            axis = ApplyMatrix(matrix, axis);
         }
 
         public void RotateX(float a)
@@ -173,6 +202,7 @@ namespace _6
                                                { 0, 0, 0 , 1 }};
 
             figures = ApplyMatrixToFigures(matrix);
+            axis = ApplyMatrix(matrix, axis);
         }
 
         public void RotateY(float a)
@@ -185,31 +215,44 @@ namespace _6
                                                { 0, 0, 0 , 1 }};
 
             figures = ApplyMatrixToFigures(matrix);
+            axis = ApplyMatrix(matrix, axis);
         }
 
 
        
 
-        internal List<Point[]> getXZProj()
+        internal List<Point[]> getXZProj(List<Point3D[]> target)
         {
             
             
 
            
             List<Point[]> result = new List<Point[]>();
-            foreach (Point3D[] points in figures)
+            foreach (Point3D[] points in target)
             {
                 Point[] newPoints = new Point[points.Length];
                 for (int i = 0; i < points.Length; i++)
                 {
                    
-                    newPoints[i].X = (int)points[i].Y;
+                    newPoints[i].X = (int)points[i].X;
                     newPoints[i].Y = (int)points[i].Z;
                 }
                 result.Add(newPoints);
             }
 
             return result;
+        }
+
+        internal List<Point[]> getXZFiguresProj()
+        {
+
+
+            return getXZProj(figures);
+        }
+
+        internal List<Point[]> getXZAxisProj()
+        {
+            return getXZProj(axis);
         }
 
 
