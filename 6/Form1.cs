@@ -17,8 +17,7 @@ namespace _6
             InitializeComponent();
         }
 
-        bool xLines = true;
-        bool yLines = false;
+        bool axis = false;
 
         int minX = -200;
         int maxX = 200;
@@ -34,10 +33,9 @@ namespace _6
             int option = comboBox1.SelectedIndex;
             Utils3D utils = new Utils3D();
             utils.Init(minX, minY, maxX, maxY,count);
-           // utils.RotateZ((float)(30 *Math.PI / 180));
-           // utils.RotateX((float)(30 *Math.PI / 180));
-            // utils.plotWithRemove(e.Graphics);
-            //utils.RotateY(30);
+            utils.RotateZ((float)(30 *Math.PI / 180));
+            utils.RotateX((float)(30 *Math.PI / 180));
+           
 
             Point center = new Point(pictureBox1.Width / 2, pictureBox1.Height / 2);
 
@@ -79,6 +77,46 @@ namespace _6
                     }
                     break;
 
+
+                case 2:
+                    curves = utils.getXZProj();
+                    for (int i = 0; i < curves.Count; i++)
+                    {
+                        for (int j = 0; j < curves[i].Length - 1; j++)
+                        {
+                            e.Graphics.DrawLine(pen, Centrate(curves[i][j]), Centrate(curves[i][j + 1]));
+
+                        }
+
+                    }
+
+                   
+                    for (int i = 0; i < curves.Count - 1; i++)
+                    {
+                        for (int j = 0; j < curves[i].Length; j++)
+                        {
+                            e.Graphics.DrawLine(pen, Centrate(curves[i][j]), Centrate(curves[i + 1][j]));
+
+                        }
+
+                    }
+
+                    break;
+
+            }
+
+            if (axis)
+            {
+                List<Point[]> axis = utils.getXZAxisProj();
+                for (int i = 0; i < axis.Count; i++)
+                {
+                    for (int j = 0; j < axis[i].Length - 1; j++)
+                    {
+                        e.Graphics.DrawLine(pen, Centrate(axis[i][j]), Centrate(axis[i][j+1]));
+
+                    }
+
+                }
             }
            
 
@@ -95,6 +133,8 @@ namespace _6
 
         private void button1_Click(object sender, EventArgs e)
         {
+            if (axisCheckBox.Checked) axis = true;
+            else axis = false;
 
             count = int.Parse(countTextBox.Text);
             minX = int.Parse(MinXText.Text);

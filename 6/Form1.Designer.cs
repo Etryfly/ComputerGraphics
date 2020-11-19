@@ -41,6 +41,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.axisCheckBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -86,7 +87,7 @@
             this.MinXText.Name = "MinXText";
             this.MinXText.Size = new System.Drawing.Size(100, 20);
             this.MinXText.TabIndex = 8;
-            this.MinXText.Text = "-200";
+            this.MinXText.Text = "-20";
             // 
             // MaxXText
             // 
@@ -94,7 +95,7 @@
             this.MaxXText.Name = "MaxXText";
             this.MaxXText.Size = new System.Drawing.Size(100, 20);
             this.MaxXText.TabIndex = 9;
-            this.MaxXText.Text = "200";
+            this.MaxXText.Text = "20";
             // 
             // MinYText
             // 
@@ -102,7 +103,7 @@
             this.MinYText.Name = "MinYText";
             this.MinYText.Size = new System.Drawing.Size(100, 20);
             this.MinYText.TabIndex = 10;
-            this.MinYText.Text = "-200";
+            this.MinYText.Text = "-20";
             // 
             // MaxYText
             // 
@@ -110,7 +111,7 @@
             this.MaxYText.Name = "MaxYText";
             this.MaxYText.Size = new System.Drawing.Size(100, 20);
             this.MaxYText.TabIndex = 11;
-            this.MaxYText.Text = "200";
+            this.MaxYText.Text = "20";
             // 
             // label2
             // 
@@ -161,11 +162,22 @@
             this.comboBox1.Size = new System.Drawing.Size(121, 21);
             this.comboBox1.TabIndex = 18;
             // 
+            // axisCheckBox
+            // 
+            this.axisCheckBox.AutoSize = true;
+            this.axisCheckBox.Location = new System.Drawing.Point(756, 387);
+            this.axisCheckBox.Name = "axisCheckBox";
+            this.axisCheckBox.Size = new System.Drawing.Size(46, 17);
+            this.axisCheckBox.TabIndex = 19;
+            this.axisCheckBox.Text = "Оси";
+            this.axisCheckBox.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(887, 581);
+            this.Controls.Add(this.axisCheckBox);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
@@ -202,6 +214,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.CheckBox axisCheckBox;
     }
 }
 
