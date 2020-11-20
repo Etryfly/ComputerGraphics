@@ -33,8 +33,10 @@ namespace _6
             int option = comboBox1.SelectedIndex;
             Utils3D utils = new Utils3D();
             utils.Init(minX, minY, maxX, maxY,count);
-            utils.RotateZ((float)(93 *Math.PI / 180));
-            utils.RotateX((float)(33 *Math.PI / 180));
+            float aX = (float)(33 * Math.PI / 180);
+            float aZ = (float)(33 * Math.PI / 180);
+            utils.RotateZ(aZ);
+            utils.RotateX(aX);
             
 
             Point center = new Point(pictureBox1.Width / 2, pictureBox1.Height / 2);
@@ -103,6 +105,13 @@ namespace _6
 
                     break;
 
+
+                case 3:
+                    {
+                        utils.plotWithHor(center, e.Graphics, minX, minY, maxX, maxY, count, aX, aZ);
+
+                    }
+                    break;
             }
 
             if (axis)

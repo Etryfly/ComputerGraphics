@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
 namespace _6
@@ -12,7 +13,7 @@ namespace _6
     class Utils3D
     {
 
-        float minX, minZ, maxX, maxZ;
+        float minX, minY, maxX, maxY;
         public bool hide = false;
         private List<Point3D[]> figures = new List<Point3D[]>();
         private List<Point3D[]> axis = new List<Point3D[]>();
@@ -42,8 +43,9 @@ namespace _6
 
         private float func(float x, float y)
         {
-            //return (float)(Math.Cos(x) *2* Math.Sin(y));
+          //  return (float)(Math.Cos(x) *2* Math.Sin(y));
             return (float)(Math.Sqrt(x*x + y*y));
+           // return 0;
         }
 
         private void InitAxis(float size)
@@ -57,7 +59,7 @@ namespace _6
             y[0] = new Point3D(0, size, 0);
             z[0] = new Point3D(0, 0, -size);
             z[1] = new Point3D(0, 0, size);
-
+            axis.Clear();
             axis.Add(x);
             axis.Add(y);
             axis.Add(z);
@@ -121,6 +123,15 @@ namespace _6
 
             figures = ApplyMatrixToFigures(matrix);
             axis = ApplyMatrix(matrix, axis);
+        }
+
+        public List<Point3D[]> Resize(float k, List<Point3D[]> target)
+        {
+            float[,] matrix = new float[4, 4] { { k, 0, 0 ,0 },
+                                               { 0, k, 0 ,0 },
+                                               { 0, 0, k ,0 },
+                                               { 0, 0, 0 , 1 }};
+            return ApplyMatrix(matrix, target);
         }
 
         private Point3D floatArrToPoint3D(float[,] point)
@@ -210,8 +221,35 @@ namespace _6
             axis = ApplyMatrix(matrix, axis);
         }
 
+        private Point getProjection(Point3D point, float aX, float aZ, int size)
+        {
+            point.X *= size;
+            point.Y *= size;
+            point.Z *= size; 
+            float cosZ = (float)Math.Cos(aZ);
+            float sinZ = (float)Math.Sin(aZ);
+            float[,] zMatrix = new float[4, 4]{ { cosZ, sinZ, 0 ,0 },
+                                               { -sinZ, cosZ, 0 ,0 },
+                                               { 0, 0, 1 ,0 },
+                                               { 0, 0, 0 , 1 }};
+            float cos = (float)Math.Cos(aX);
+            float sin = (float)Math.Sin(aX);
+            float[,] xMatrix = new float[4, 4] { { 1, 0, 0 ,0 },
+                                               { 0, cos, sin ,0 },
+                                               { 0, -sin, cos ,0 },
+                                               { 0, 0, 0 , 1 }};
 
-       
+            float[,] resizeMatrix = new float[4, 4] { {size, 0, 0 ,0 },
+                                               { 0, size, 0 ,0 },
+                                               { 0, 0, size ,0 },
+                                               { 0, 0, 0 , 1 }};
+
+
+            //Point3D rotated = floatArrToPoint3D(Dot(Dot(Dot(Point3DToMatrix(point), resizeMatrix), xMatrix), zMatrix));
+            Point3D rotated = floatArrToPoint3D(Dot(Dot(Point3DToMatrix(point), zMatrix), xMatrix) );
+            return new Point((int)rotated.X , (int)rotated.Z );
+        }
+
 
         internal List<Point[]> getXZProj(List<Point3D[]> target)
         {
@@ -251,18 +289,18 @@ namespace _6
         public List<Point[]> getProjWithRemovedLines(Graphics g, int cX, int cY)
         {
             maxX = int.MinValue;
-            maxZ = int.MinValue;
+            maxY = int.MinValue;
             minX = int.MaxValue;
-            minZ = int.MaxValue;
+            minY = int.MaxValue;
             for (int i = 0; i < figures.Count; i++)
             {
                 for (int j = 0; j < figures[i].Length; j++)
                 {
                     Point3D p = figures[i][j];
                     if (p.X > maxX) maxX = p.X;
-                    if (p.Y > maxZ) maxZ = p.Z;
+                    if (p.Y > maxY) maxY = p.Z;
                     if (p.X < minX) minX = p.X;
-                    if (p.Y < minZ) minZ = p.Z;
+                    if (p.Y < minY) minY = p.Z;
 
                 }
             }
@@ -271,7 +309,7 @@ namespace _6
             float[] horMin = new float[(int) (maxX - minX) + 1];
             for (int i = 0; i < horMin.Length; i++)
             {
-                horMin[i] = maxZ - minZ + 50000;
+                horMin[i] = maxY - minY + 50000;
                 horMax[i] = - 100000000;
                // horMax[i] = minZ;
             }
@@ -314,16 +352,7 @@ namespace _6
                         points.Clear();
                     }
                    
-                  /*  if (!isAdded )
-                    {
-                        if (points.Count == 0)
-                        {
-                          //  points.Add(new Point((int)(IX + minX), IY));
-                            //g.FillRectangle(new SolidBrush(Color.Black), IX + minX + cX, IY + cY, 1, 1);
-                        }
-                        else
-                            points.Add(points[points.Count - 1]);
-                    } */
+                 
                 }
 
                 result.Add(points.ToArray());
@@ -332,6 +361,133 @@ namespace _6
             return result;
         }
 
+        public void RotateAxis(float x, float z)
+        {
+            float cosZ = (float)Math.Cos(z);
+            float sinZ = (float)Math.Sin(z);
+            float[,] zMatrix = new float[4, 4]{ { cosZ, sinZ, 0 ,0 },
+                                               { -sinZ, cosZ, 0 ,0 },
+                                               { 0, 0, 1 ,0 },
+                                               { 0, 0, 0 , 1 }};
+            float cos = (float)Math.Cos(x);
+            float sin = (float)Math.Sin(x);
+            float[,] xMatrix = new float[4, 4] { { 1, 0, 0 ,0 },
+                                               { 0, cos, sin ,0 },
+                                               { 0, -sin, cos ,0 },
+                                               { 0, 0, 0 , 1 }};
+
+            axis = ApplyMatrix(zMatrix, axis);
+            axis = ApplyMatrix(xMatrix, axis);
+        }
+
+        public void plotWithHor(Point center, Graphics g, float leftX, float leftY, float rightX, float rightY,
+            int count, float aX, float aZ)
+        {
+            InitAxis(rightY - leftY);
+            
+
+            RotateAxis(aX, aZ);
+            axis = Resize(10, axis);
+
+            maxX = int.MinValue;
+            maxY = int.MinValue;
+            minX = int.MaxValue;
+            minY = int.MaxValue;
+            
+            for (float i = leftX; i < rightX; i++)
+            {
+                for (float j = leftY; j < rightY; j++)
+                {
+                    Point3D point = new Point3D(i, j, func(i, j));
+                   // Point point = getProjection(point, aX, aZ, 10);
+                    if (point.X > maxX) maxX = point.X;
+                    if (point.Y > maxY) maxY = point.Y;
+                    if (point.X < minX) minX = point.X;
+                    if (point.Y < minY) minY = point.Y;
+
+                }
+            }
+
+            minX = leftX;
+            maxX = rightX;
+            minY = leftY;
+            maxY = rightY;
+
+           // maxY += 100;
+
+            float[] horMax = new float[(int)(maxX - minX) + 10000];
+            float[] horMin = new float[(int)(maxX - minX) + 10000];
+            for (int i = 0; i < horMin.Length; i++)
+            {
+                horMin[i] = maxY - minY + 50000;
+                horMax[i] = -100000000;
+                // horMax[i] = minZ;
+            }
+
+           /* minX -=100;
+            maxX += 100;
+            minY -= 100;
+            maxY += 100;
+           */
+            Pen pen = new Pen(Color.Red);
+
+            List<Point[]> result = new List<Point[]>();
+
+            for (float i = minX; i < maxX; i += 1)
+            {
+                Point prevPoint = new Point();
+                bool isFirst = true;
+                for (float j = minY; j  < maxY; j += 1)
+                {
+
+                    Point3D curPoint = new Point3D(i, j, func(i, j));
+                    bool isAdded = false;
+                    
+                    Point projPoint = getProjection(curPoint, aX, aZ , 10);
+                    int IX = (int)(projPoint.X - minX);
+                    //if (IX < 0) IX = 0;
+                    int IY = (int)projPoint.Y;
+
+                    Point p = new Point((int)(IX + minX + center.X), IY + center.Y);
+                    if (!isFirst)
+                        g.DrawLine(pen, prevPoint, p);
+                    prevPoint = p;
+                    isFirst = false;
+                    /*
+                    if (IY > horMax[IX])
+                    {
+                        horMax[IX] = IY;
+                        Point p = new Point((int)(IX + minX + center.X), IY + center.Y);
+                        if (!isFirst)
+                            g.DrawLine(pen, prevPoint, p);
+                        prevPoint = p;
+                        isFirst = false;
+                       
+                        isAdded = true;
+                       
+                    }
+
+                    if (IY < horMin[IX])
+                    {
+                        horMin[IX] = IY;
+                        Point p = new Point((int)(IX + minX + center.X), IY + center.Y);
+                        if (!isFirst)
+                            g.DrawLine(pen, prevPoint, p);
+                        prevPoint = p;
+                        isAdded = true;
+                        isFirst = false;
+                    }
+                    */
+
+                  
+
+                  
+                }
+
+               
+            }
+
+        }
         private float[,] Point3DToMatrix(Point3D point)
         {
             float[,] result = new float[1, 4];
