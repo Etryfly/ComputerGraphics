@@ -33,9 +33,10 @@ namespace _6
             int option = comboBox1.SelectedIndex;
             Utils3D utils = new Utils3D();
             utils.Init(minX, minY, maxX, maxY,count);
-            float aX = (float)(33 * Math.PI / 180);
-            float aZ = (float)(33 * Math.PI / 180);
+            float aX = (float)(10 * Math.PI / 180);
+            float aZ = (float)(180 * Math.PI / 180);
             utils.RotateZ(aZ);
+           // utils.RotateY(aX);
             utils.RotateX(aX);
             
 

@@ -43,8 +43,8 @@ namespace _6
 
         private float func(float x, float y)
         {
-          //  return (float)(Math.Cos(x) *2* Math.Sin(y));
-            return (float)(Math.Sqrt(x*x + y*y));
+            return (float)(Math.Cos(x) *2* Math.Sin(y));
+          //  return (float)(Math.Sqrt(x*x + y*y));
            // return 0;
         }
 
@@ -70,15 +70,15 @@ namespace _6
             InitAxis(rightY - leftY);
             float d = (rightX - leftX) / count;
 
-            for (float i = leftX; i < rightX; i += d)
+            for (float i = leftY; i < rightY; i += d)
             {
                 List<Point3D> points = new List<Point3D>();
-                for (float j = leftY; j < rightY; j += 1F)
+                for (float j = leftX; j < rightX; j += 1F)
                 {
                     Point3D point = new Point3D();
-                    point.X = i;
-                    point.Y = j;
-                    point.Z = func(i, j);
+                    point.X =j;
+                    point.Y = i;
+                    point.Z = func(j, i);
                     points.Add(point);
                 }
                 figures.Add(points.ToArray());
@@ -309,8 +309,8 @@ namespace _6
             float[] horMin = new float[(int) (maxX - minX) + 1];
             for (int i = 0; i < horMin.Length; i++)
             {
-                horMin[i] = maxY - minY + 50000;
-                horMax[i] = - 100000000;
+                horMin[i] = int.MaxValue;
+                horMax[i] = int.MinValue;
                // horMax[i] = minZ;
             }
 
@@ -398,8 +398,8 @@ namespace _6
             {
                 for (float j = leftY; j < rightY; j++)
                 {
-                    Point3D point = new Point3D(i, j, func(i, j));
-                   // Point point = getProjection(point, aX, aZ, 10);
+                    Point3D pointF = new Point3D(i, j, func(i, j));
+                    Point point = getProjection(pointF, aX, aZ, 10);
                     if (point.X > maxX) maxX = point.X;
                     if (point.Y > maxY) maxY = point.Y;
                     if (point.X < minX) minX = point.X;
@@ -408,12 +408,13 @@ namespace _6
                 }
             }
 
-            minX = leftX;
-            maxX = rightX;
-            minY = leftY;
-            maxY = rightY;
 
-           // maxY += 100;
+            /*
+            maxX = rightX;
+            maxY = rightY;
+            minX = leftX;
+            minY = leftY;
+            */
 
             float[] horMax = new float[(int)(maxX - minX) + 10000];
             float[] horMin = new float[(int)(maxX - minX) + 10000];
@@ -424,20 +425,21 @@ namespace _6
                 // horMax[i] = minZ;
             }
 
-           /* minX -=100;
-            maxX += 100;
-            minY -= 100;
-            maxY += 100;
-           */
+            /* minX -=100;
+             maxX += 100;
+             minY -= 100;
+             maxY += 100;
+            */
+
             Pen pen = new Pen(Color.Red);
 
             List<Point[]> result = new List<Point[]>();
 
-            for (float i = minX; i < maxX; i += 1)
+            for (float i = 0; i < maxX; i += 1)
             {
                 Point prevPoint = new Point();
                 bool isFirst = true;
-                for (float j = minY; j  < maxY; j += 1)
+                for (float j = 0; j  < maxY; j += 1)
                 {
 
                     Point3D curPoint = new Point3D(i, j, func(i, j));
@@ -448,12 +450,12 @@ namespace _6
                     //if (IX < 0) IX = 0;
                     int IY = (int)projPoint.Y;
 
-                    Point p = new Point((int)(IX + minX + center.X), IY + center.Y);
+                   /* Point p = new Point((int)(IX + minX + center.X), IY + center.Y);
                     if (!isFirst)
                         g.DrawLine(pen, prevPoint, p);
                     prevPoint = p;
-                    isFirst = false;
-                    /*
+                    isFirst = false; */
+                    
                     if (IY > horMax[IX])
                     {
                         horMax[IX] = IY;
@@ -477,7 +479,7 @@ namespace _6
                         isAdded = true;
                         isFirst = false;
                     }
-                    */
+                    
 
                   
 
