@@ -33,9 +33,9 @@ namespace _6
             int option = comboBox1.SelectedIndex;
             Utils3D utils = new Utils3D();
             utils.Init(minX, minY, maxX, maxY,count);
-            utils.RotateZ((float)(30 *Math.PI / 180));
-            utils.RotateX((float)(30 *Math.PI / 180));
-           
+            utils.RotateZ((float)(93 *Math.PI / 180));
+            utils.RotateX((float)(33 *Math.PI / 180));
+            
 
             Point center = new Point(pictureBox1.Width / 2, pictureBox1.Height / 2);
 

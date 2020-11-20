@@ -42,7 +42,8 @@ namespace _6
 
         private float func(float x, float y)
         {
-            return (float)(Math.Cos(x) *2* Math.Sin(y));
+            //return (float)(Math.Cos(x) *2* Math.Sin(y));
+            return (float)(Math.Sqrt(x*x + y*y));
         }
 
         private void InitAxis(float size)
@@ -66,34 +67,25 @@ namespace _6
         {
             InitAxis(rightY - leftY);
             float d = (rightX - leftX) / count;
-           
-            for (float i = leftX; i < rightX; i+= d)
+
+            for (float i = leftX; i < rightX; i += d)
             {
                 List<Point3D> points = new List<Point3D>();
-                for (float j = leftY; j < rightY; j+=1F)
+                for (float j = leftY; j < rightY; j += 1F)
                 {
                     Point3D point = new Point3D();
                     point.X = i;
                     point.Y = j;
-                    point.Z = func(i, j );
+                    point.Z = func(i, j);
                     points.Add(point);
                 }
                 figures.Add(points.ToArray());
             }
 
-           // Smooth();
+           
             ResizeZ(10);
             ResizeX(10);
             ResizeY(10);
-        }
-
-      
-
-        private void SwapPoints(ref Point3D firstPoint, ref Point3D secondPoint)
-        {
-            Point3D tempPoint = firstPoint;
-            firstPoint = secondPoint;
-            secondPoint = tempPoint;
         }
 
         public void ResizeZ(int z)
@@ -279,7 +271,8 @@ namespace _6
             float[] horMin = new float[(int) (maxX - minX) + 1];
             for (int i = 0; i < horMin.Length; i++)
             {
-                horMin[i] = maxZ - minZ;
+                horMin[i] = maxZ - minZ + 50000;
+                horMax[i] = - 100000000;
                // horMax[i] = minZ;
             }
 
@@ -292,18 +285,18 @@ namespace _6
                 {
                     SolidBrush brush = new SolidBrush(Color.Black);
                     Point3D point = figures[i][j];
-                    bool isAdded1 = false;
+                 
                     bool isAdded = false;
                     int IX = (int)(point.X - minX);
                     int IY = (int)point.Z;
-                    /*if ( IY < horMin[IX] )
+                    if ( IY > horMax[IX] )
                     {
                         horMax[IX] = IY;
                         Point p = new Point((int)(IX + minX), IY);
                         points.Add(p);
                         isAdded = true;
-                        g.FillRectangle(new SolidBrush(Color.Black), IX + minX + cX, IY + cY, 1, 1);
-                    } */
+                        //g.FillRectangle(new SolidBrush(Color.Black), IX + minX + cX, IY + cY, 1, 1);
+                    } 
 
                     if (IY < horMin[IX])
                     {
@@ -312,10 +305,16 @@ namespace _6
                         points.Add(p);
                        // g.FillRectangle(new SolidBrush(Color.Black), IX + minX + cX, IY + cY, 1, 1);
                          isAdded = true;
-                    }
+                    } 
                     
+
+                    if (!isAdded)
+                    {
+                        result.Add(points.ToArray());
+                        points.Clear();
+                    }
                    
-                    if (!isAdded )
+                  /*  if (!isAdded )
                     {
                         if (points.Count == 0)
                         {
@@ -324,7 +323,7 @@ namespace _6
                         }
                         else
                             points.Add(points[points.Count - 1]);
-                    }
+                    } */
                 }
 
                 result.Add(points.ToArray());
