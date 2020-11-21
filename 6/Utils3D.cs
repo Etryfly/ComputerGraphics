@@ -24,6 +24,11 @@ namespace _6
 
         }
 
+        public List<Point3D[]> getFigures()
+        {
+            return figures;
+        }
+
         public List<Point3D[]> ApplyMatrix(float[,] matrix, List<Point3D[]> point3Ds)
         {
             List<Point3D[]> result = new List<Point3D[]>();
@@ -380,116 +385,7 @@ namespace _6
             axis = ApplyMatrix(xMatrix, axis);
         }
 
-        public void plotWithHor(Point center, Graphics g, float leftX, float leftY, float rightX, float rightY,
-            int count, float aX, float aZ)
-        {
-            InitAxis(rightY - leftY);
-            
-
-            RotateAxis(aX, aZ);
-            axis = Resize(10, axis);
-
-            maxX = int.MinValue;
-            maxY = int.MinValue;
-            minX = int.MaxValue;
-            minY = int.MaxValue;
-            
-            for (float i = leftX; i < rightX; i++)
-            {
-                for (float j = leftY; j < rightY; j++)
-                {
-                    Point3D pointF = new Point3D(i, j, func(i, j));
-                    Point point = getProjection(pointF, aX, aZ, 10);
-                    if (point.X > maxX) maxX = point.X;
-                    if (point.Y > maxY) maxY = point.Y;
-                    if (point.X < minX) minX = point.X;
-                    if (point.Y < minY) minY = point.Y;
-
-                }
-            }
-
-
-            /*
-            maxX = rightX;
-            maxY = rightY;
-            minX = leftX;
-            minY = leftY;
-            */
-
-            float[] horMax = new float[(int)(maxX - minX) + 10000];
-            float[] horMin = new float[(int)(maxX - minX) + 10000];
-            for (int i = 0; i < horMin.Length; i++)
-            {
-                horMin[i] = maxY - minY + 50000;
-                horMax[i] = -100000000;
-                // horMax[i] = minZ;
-            }
-
-            /* minX -=100;
-             maxX += 100;
-             minY -= 100;
-             maxY += 100;
-            */
-
-            Pen pen = new Pen(Color.Red);
-
-            List<Point[]> result = new List<Point[]>();
-
-            for (float i = 0; i < maxX; i += 1)
-            {
-                Point prevPoint = new Point();
-                bool isFirst = true;
-                for (float j = 0; j  < maxY; j += 1)
-                {
-
-                    Point3D curPoint = new Point3D(i, j, func(i, j));
-                    bool isAdded = false;
-                    
-                    Point projPoint = getProjection(curPoint, aX, aZ , 10);
-                    int IX = (int)(projPoint.X - minX);
-                    //if (IX < 0) IX = 0;
-                    int IY = (int)projPoint.Y;
-
-                   /* Point p = new Point((int)(IX + minX + center.X), IY + center.Y);
-                    if (!isFirst)
-                        g.DrawLine(pen, prevPoint, p);
-                    prevPoint = p;
-                    isFirst = false; */
-                    
-                    if (IY > horMax[IX])
-                    {
-                        horMax[IX] = IY;
-                        Point p = new Point((int)(IX + minX + center.X), IY + center.Y);
-                        if (!isFirst)
-                            g.DrawLine(pen, prevPoint, p);
-                        prevPoint = p;
-                        isFirst = false;
-                       
-                        isAdded = true;
-                       
-                    }
-
-                    if (IY < horMin[IX])
-                    {
-                        horMin[IX] = IY;
-                        Point p = new Point((int)(IX + minX + center.X), IY + center.Y);
-                        if (!isFirst)
-                            g.DrawLine(pen, prevPoint, p);
-                        prevPoint = p;
-                        isAdded = true;
-                        isFirst = false;
-                    }
-                    
-
-                  
-
-                  
-                }
-
-               
-            }
-
-        }
+      
         private float[,] Point3DToMatrix(Point3D point)
         {
             float[,] result = new float[1, 4];
