@@ -69,6 +69,7 @@ namespace _6
                 case 1:
                     {
                         curvesProj = utils.getProjWithRemovedLines(e.Graphics, center.X, center.Y);
+                        
                         for (int i = 0; i < curvesProj.Count; i++)
                         {
                             for (int j = 0; j < curvesProj[i].Length - 1; j++)
@@ -93,11 +94,12 @@ namespace _6
                         }
 
                     }
-
                    
-                    for (int i = 0; i < curvesProj.Count - 1; i++)
+
+                    for (int i = 0; i < curvesProj.Count - 1; i+=1)
                     {
-                        for (int j = 0; j < curvesProj[i].Length; j++)
+                        int d = (curvesProj[i].Length - count) / count;
+                        for (int j = 0; j < curvesProj[i].Length - d; j+=d)
                         {
                             e.Graphics.DrawLine(pen, Centrate(curvesProj[i][j]), Centrate(curvesProj[i + 1][j]));
 
@@ -112,9 +114,9 @@ namespace _6
                     {
                         curvesProj = utils.getXZFiguresProj();
                         List<Point3D[]> curves = utils.getFigures();
-                        for (int i = curvesProj.Count - 2; i >= 0; i--)
+                        for (int i =0; i <= curvesProj.Count - 2; i++)
                         {
-                            for (int j = curvesProj[i].Length - 3; j >= 0 ; j--)
+                            for (int j = 0; j <= curvesProj[i].Length - 3; j++)
                             {
                                 Point3D A = curves[i][j];
                                 Point3D B = curves[i + 1][j];
@@ -134,8 +136,8 @@ namespace _6
 
                                 float[] pov = new float[3];
                                 pov[0] = 0.2F;
-                                pov[1] = -0.1F;
-                                pov[2] = 0.8F;
+                                pov[1] = 0;
+                                pov[2] = 0.3F;
                                 float cosAlpha = (float)((pov[0] * N.X + pov[1] * N.Y + pov[2] * N.Z) /
                                     (Math.Sqrt(N.X * N.X + N.Y + N.Y + N.Z * N.Z) * Math.Sqrt(pov[0] * pov[0] + pov[1] * pov[1] + 
                                     pov[2] * pov[2])));
@@ -143,7 +145,7 @@ namespace _6
                                 int c = (int)Math.Abs(255 * Math.Sin(alpha));
                                 if (c < 0) c = 0;
                                 if (c > 255) c = 255;
-                                Pen p = new Pen(Color.FromArgb((int)(c * 0.5F), (int)(c * 0.3F), 50,255));
+                                Pen p = new Pen(Color.FromArgb(c,c,0, (int)(c * 0.7F)));
 
                                 Point[] polygon = new Point[3];
                                  polygon[0] = Centrate(curvesProj[i][j]);
