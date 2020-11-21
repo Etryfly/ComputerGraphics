@@ -73,7 +73,7 @@ namespace _6
             for (float i = leftY; i < rightY; i += d)
             {
                 List<Point3D> points = new List<Point3D>();
-                for (float j = leftX; j < rightX; j += 1F)
+                for (float j = leftX; j < rightX; j += 0.1F)
                 {
                     Point3D point = new Point3D();
                     point.X =j;
