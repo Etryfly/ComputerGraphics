@@ -1,124 +1,218 @@
 #include <windows.h> 
 #include <GL/glut.h>  
+#include <SOIL.h>
+#include <iostream>
+
+char title[] = "8";
+GLfloat light1_diffuse[] = { 1, 1, 1 };
+float pos[4] = { 0,0,-3,0 };
+float lightPos[4] = { -3,-5,-3,0.5f };
+int width, height;
+GLubyte* image = SOIL_load_image("coal.jpg", &width, &height, 0, SOIL_LOAD_RGB);
+bool isTextureEnable = true;
+
+void processKeys(int key, int x, int y) {
+
+    if (key == GLUT_KEY_RIGHT) {
+        pos[0] -= 1;
+    }
+
+    if (key == GLUT_KEY_LEFT) {
+        pos[0] += 1;
+    }
+
+    if (key == GLUT_KEY_UP) {
+        pos[1] -= 1;
+    }
+
+    if (key == GLUT_KEY_DOWN) {
+        pos[1] += 1;
+    }
+
+    if (key == GLUT_KEY_F1) {
+        lightPos[1] +=5;
+    }
 
 
-/* Global variables */
-char title[] = "3D Shapes";
-float angle = 0;
+    if (key == GLUT_KEY_F2) {
+        lightPos[1] -= 5;
+    }
 
-/* Initialize OpenGL Graphics */
-void initGL() {
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Set background color to black and opaque
-    glClearDepth(1.0f);                   // Set background depth to farthest
-    glEnable(GL_DEPTH_TEST);   // Enable depth testing for z-culling
-    glDepthFunc(GL_LEQUAL);    // Set the type of depth-test
-    glShadeModel(GL_SMOOTH);   // Enable smooth shading
-    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);  // Nice perspective corrections
-}
+    if (key == GLUT_KEY_F3) {
+        light1_diffuse[0] += 0.1f;
+    }
 
-void timer(int arg)
-{
-    angle += 0.1;
+    if (key == GLUT_KEY_F4) {
+        light1_diffuse[0] -= 0.1f;
+    }
+
+    if (key == GLUT_KEY_F5) {
+        isTextureEnable = !isTextureEnable;
+    }
     glutPostRedisplay();
-    //glutTimerFunc(100, timer, 0);
 }
 
 
-/* Handler for window-repaint event. Called back when the window first appears and
-   whenever the window needs to be re-painted. */
+void initGL() {
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClearDepth(1.0f);                 
+    glutSpecialFunc(processKeys);
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LEQUAL);    
+    glShadeModel(GL_SMOOTH);  
+    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);  
+}
+
+
+
 void display() {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear color and depth buffers
-    glMatrixMode(GL_MODELVIEW);     // To operate on model-view matrix
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glMatrixMode(GL_MODELVIEW);   
     glOrtho(-2.0, 2.0, -2.0, 2.0, -1.5, 1.5);
+    
+    glEnable(GL_LIGHTING);
+    glLoadIdentity();        
 
-    // Render a color-cube consisting of 6 quads with different colors
+    glEnable(GL_LIGHT0);
+    
 
-    // Render a pyramid consists of 4 triangles
-    glLoadIdentity();                  // Reset the model-view matrix
-  //  glTranslatef(-2, 0.0f, -5.0f);  // Move left and into the screen
+
+    glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, light1_diffuse);
+
+    GLfloat light2_diffuse[] = { 1, 0.5, 1 };
+    
+    float lightPos2[4] = { -3,5,-3,0.5f };
+
+    float ambient[4] = { 1, 1, 1, 1 };
+
+    glEnable(GL_LIGHT1);
+
+
+
+    glLightfv(GL_LIGHT1, GL_POSITION, lightPos2);
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, light2_diffuse);
+
+    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambient);
+
+    glTranslatef(pos[0], pos[1], pos[2]);
+   
+
     glTranslatef(1.5f, 0.0f, -7.0f);
-    glRotatef(angle, 0.0, 1.0, 0.0);
-    glRotatef(angle, 1.0, 1.0, 0.0);
-    // glRotatef(angle, 1.0, .0, 0.0);
+    glRotatef(40, 0.0, 1.0, 0.0);
+    glRotatef(33, 1.0, 0.0, 0.0);
 
-    glBegin(GL_TRIANGLES);           // Begin drawing the pyramid with 4 triangles
+    if (isTextureEnable) {
+        glEnable(GL_TEXTURE_2D);
+    }
+    else {
+        glDisable(GL_TEXTURE_2D);
+    }
+    GLuint texture;
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    
 
-    glColor3f(1.0f, 0.0f, 0.0f);     // Red
-    glVertex3f(-1, 2, 0);
-    glVertex3f(2, 0, 0);
-    glVertex3f(-1, -2, 0);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
-    glColor3f(1.0f, 1.0f, 1.0f);     // Red
-    glVertex3f(0, 1, 1);
-    glVertex3f(1, 0, 1);
-    glVertex3f(0, -1, 1);
-
-    glEnd();
-
-
+   
+  
+    
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+    gluBuild2DMipmaps(GL_TEXTURE_2D, 3,
+       width, height,
+       GL_RGB, GL_UNSIGNED_BYTE, image);
+    //glGenerateMipmap(GL_TEXTURE_2D);
+    
     glBegin(GL_QUADS);
 
-    glColor3f(1.0f, 0.0f, 1.0f);
-    glVertex3f(-1, 2, 0);
-    glVertex3f(0, 1, 1);
-    glVertex3f(1, 0, 1);
-    glVertex3f(2, 0, 0);
+    //glColor3f(1.0f, 1.0f, 1.0f);
+    glTexCoord2f(0, 0); glVertex3f(-1, 2, 0);
+    glTexCoord2f(0, 1); glVertex3f(0, 1, 1);
+    glTexCoord2f(1, 1); glVertex3f(1, 0, 1);
+    glTexCoord2f(1, 0); glVertex3f(2, 0, 0);
 
 
-    glColor3f(0.0f, 1.0f, 0.0f);
-    glVertex3f(1, 0, 1);
-    glVertex3f(2, 0, 0);
-    glVertex3f(-1, -2, 0);
-    glVertex3f(0, -1, 1);
+   // glColor3f(0.0f, 1.0f, 0.0f);
+    glTexCoord2f(0, 0); glVertex3f(1, 0, 1);
+    glTexCoord2f(0, 1); glVertex3f(2, 0, 0);
+   glTexCoord2f(1, 1); glVertex3f(-1, -2, 0);
+   glTexCoord2f(1, 0); glVertex3f(0, -1, 1);
 
 
-    glColor3f(0.0f, 0.0f, 1.0f);
-    glVertex3f(-1, -2, 0);
-    glVertex3f(0, -1, 1);
-    glVertex3f(0, 1, 1);
-    glVertex3f(-1, 2, 0);
+   // glColor3f(0.0f, 0.0f, 1.0f);
+    glTexCoord2f(0, 0); glVertex3f(-1, -2, 0);
+    glTexCoord2f(0, 1); glVertex3f(0, -1, 1);
+    glTexCoord2f(1, 1); glVertex3f(0, 1, 1);
+    glTexCoord2f(1, 0); glVertex3f(-1, 2, 0);
     glEnd();
 
+    glBegin(GL_TRIANGLES);          
+      
+    glColor3f(1.0f, 0.0f, 1.0f);   
+    glTexCoord2f(0, 0); glTexCoord2f(0.0f, 0.0f); glVertex3f(-1, 2, 0);
+    glTexCoord2f(0, 1); glTexCoord2f(0.0f, 1.0f); glVertex3f(2, 0, 0);
+    glTexCoord2f(1, 1); glTexCoord2f(1.0f, 0.0f); glVertex3f(-1, -2, 0);
+    
+    glColor3f(1.0f, 1.0f, 1.0f);    
+    glTexCoord2f(0, 0); glVertex3f(0, 1, 1);
+    glTexCoord2f(0, 1); glVertex3f(1, 0, 1);
+    glTexCoord2f(1, 1); glVertex3f(0, -1, 1);
+   
+    glEnd();   
+   
 
 
-    glLoadIdentity();                  // Reset the model-view matrix
-    glTranslatef(-1.5f, 0.0f, -6.0f);
+    glTranslatef(-1.5f, -  2.0f, -6.0f);
 
-    glutSwapBuffers();  // Swap the front and back frame buffers (double buffering)
-    glutTimerFunc(1, timer, 0);
+    GLUquadricObj* obj = gluNewQuadric();
+    gluQuadricDrawStyle(obj, GLU_FILL);
+      
+    gluQuadricDrawStyle(obj, GLU_LINE);
+    gluQuadricNormals(obj, GLU_SMOOTH);
+    gluQuadricTexture(obj, GL_TRUE);
+    gluCylinder(obj, 1, 1, 2, 5, 1);
+    gluDeleteQuadric(obj);
+
+    glDisable(GL_TEXTURE_2D);
+   
+    glLoadIdentity();                  
+   
+
+    glutSwapBuffers(); 
+
+  
+
+    
+   // glutTimerFunc(1, timer, 0);
 }
 
 
-
-/* Handler for window re-size event. Called back when the window first appears and
-   whenever the window is re-sized with its new width and height */
-void reshape(GLsizei width, GLsizei height) {  // GLsizei for non-negative integer
-   // Compute aspect ratio of the new window
-    if (height == 0) height = 1;                // To prevent divide by 0
+void reshape(GLsizei width, GLsizei height) {  
+    if (height == 0) height = 1;                
     GLfloat aspect = (GLfloat)width / (GLfloat)height;
 
-    // Set the viewport to cover the new window
     glViewport(0, 0, width, height);
 
-    // Set the aspect ratio of the clipping volume to match the viewport
-    glMatrixMode(GL_PROJECTION);  // To operate on the Projection matrix
-    glLoadIdentity();             // Reset
-    // Enable perspective projection with fovy, aspect, zNear and zFar
+    glMatrixMode(GL_PROJECTION);  
+    glLoadIdentity();            
     gluPerspective(45.0f, aspect, 0.1f, 100.0f);
 }
 
-/* Main function: GLUT runs as a console application starting at main() */
 int main(int argc, char** argv) {
-    glutInit(&argc, argv);            // Initialize GLUT
-    glutInitDisplayMode(GLUT_DOUBLE); // Enable double buffered mode
-    glutInitWindowSize(640, 480);   // Set the window's initial width & height
-    glutInitWindowPosition(50, 50); // Position the window's initial top-left corner
-    glutCreateWindow(title);          // Create window with the given title
-    glutDisplayFunc(display);       // Register callback handler for window re-paint event
-    glutReshapeFunc(reshape);       // Register callback handler for window re-size event
-    initGL();                       // Our own OpenGL initialization
+    glutInit(&argc, argv);          
+    glutInitDisplayMode(GLUT_DOUBLE); 
+    glutInitWindowSize(800, 600);  
+    glutInitWindowPosition(50, 50);
+    glutCreateWindow(title);          
+    glutDisplayFunc(display);      
+    glutReshapeFunc(reshape);      
+    glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
+    initGL();                       
 
-
-    glutMainLoop();                 // Enter the infinite event-processing loop
+    
+    glutMainLoop();                
     return 0;
 }
