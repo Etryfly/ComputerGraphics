@@ -10,6 +10,7 @@ float lightPos[4] = { -3,-5,-3,0.5f };
 int width, height;
 GLubyte* image = SOIL_load_image("coal.jpg", &width, &height, 0, SOIL_LOAD_RGB);
 bool isTextureEnable = true;
+float angle = 0;
 
 void processKeys(int key, int x, int y) {
 
@@ -49,6 +50,11 @@ void processKeys(int key, int x, int y) {
     if (key == GLUT_KEY_F5) {
         isTextureEnable = !isTextureEnable;
     }
+    if (key == GLUT_KEY_F6) {
+        angle += 5;
+    }
+
+   
     glutPostRedisplay();
 }
 
@@ -57,6 +63,7 @@ void initGL() {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClearDepth(1.0f);                 
     glutSpecialFunc(processKeys);
+  //  glutMotionFunc(mouseMove);
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);    
     glShadeModel(GL_SMOOTH);  
@@ -75,7 +82,6 @@ void display() {
 
     glEnable(GL_LIGHT0);
     
-
 
     glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, light1_diffuse);
@@ -101,6 +107,8 @@ void display() {
     glTranslatef(1.5f, 0.0f, -7.0f);
     glRotatef(40, 0.0, 1.0, 0.0);
     glRotatef(33, 1.0, 0.0, 0.0);
+
+    glRotatef(angle, 0, 1.0, 0);
 
     if (isTextureEnable) {
         glEnable(GL_TEXTURE_2D);
