@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace _6
 {
@@ -33,13 +34,16 @@ namespace _6
             int option = comboBox1.SelectedIndex;
             Utils3D utils = new Utils3D();
             utils.Init(minX, minY, maxX, maxY,count);
-            utils.RotateZ((float)(30 *Math.PI / 180));
-            utils.RotateX((float)(30 *Math.PI / 180));
-           
+            float aX = (float)(30 * Math.PI / 180);
+            float aZ = (float)(185 * Math.PI / 180);
+            utils.RotateZ(aZ);
+           // utils.RotateY(aX);
+            utils.RotateX(aX);
+            
 
             Point center = new Point(pictureBox1.Width / 2, pictureBox1.Height / 2);
 
-            List<Point[]> curves;
+            List<Point[]> curvesProj;
             if (!hide);
            
             Pen pen = new Pen(Color.Black);
@@ -49,12 +53,12 @@ namespace _6
             {
                 case 0:
                     {
-                        curves = utils.getXZFiguresProj();
-                        for (int i = 0; i < curves.Count; i++)
+                        curvesProj = utils.getXZFiguresProj();
+                        for (int i = 0; i < curvesProj.Count; i++)
                         {
-                            for (int j = 0; j < curves[i].Length - 1; j++)
+                            for (int j = 0; j < curvesProj[i].Length - 1; j++)
                             {
-                                e.Graphics.DrawLine(pen, Centrate(curves[i][j]), Centrate(curves[i][j + 1]));
+                                e.Graphics.DrawLine(pen, Centrate(curvesProj[i][j]), Centrate(curvesProj[i][j + 1]));
 
                             }
 
@@ -64,12 +68,13 @@ namespace _6
 
                 case 1:
                     {
-                        curves = utils.getProjWithRemovedLines(e.Graphics, center.X, center.Y);
-                        for (int i = 0; i < curves.Count; i++)
+                        curvesProj = utils.getProjWithRemovedLines(e.Graphics, center.X, center.Y);
+                        
+                        for (int i = 0; i < curvesProj.Count; i++)
                         {
-                            for (int j = 0; j < curves[i].Length - 1; j++)
+                            for (int j = 0; j < curvesProj[i].Length - 1; j++)
                             {
-                                e.Graphics.DrawLine(pen, Centrate(curves[i][j]), Centrate(curves[i][j + 1]));
+                                e.Graphics.DrawLine(pen, Centrate(curvesProj[i][j]), Centrate(curvesProj[i][j + 1]));
 
                             }
 
@@ -79,23 +84,24 @@ namespace _6
 
 
                 case 2:
-                    curves = utils.getXZFiguresProj();
-                    for (int i = 0; i < curves.Count; i++)
+                    curvesProj = utils.getXZFiguresProj();
+                    for (int i = 0; i < curvesProj.Count; i++)
                     {
-                        for (int j = 0; j < curves[i].Length - 1; j++)
+                        for (int j = 0; j < curvesProj[i].Length - 1; j++)
                         {
-                            e.Graphics.DrawLine(pen, Centrate(curves[i][j]), Centrate(curves[i][j + 1]));
+                            e.Graphics.DrawLine(pen, Centrate(curvesProj[i][j]), Centrate(curvesProj[i][j + 1]));
 
                         }
 
                     }
-
                    
-                    for (int i = 0; i < curves.Count - 1; i++)
+
+                    for (int i = 0; i < curvesProj.Count - 1; i+=1)
                     {
-                        for (int j = 0; j < curves[i].Length; j++)
+                        int d = (curvesProj[i].Length - count) / count;
+                        for (int j = 0; j < curvesProj[i].Length - d; j+=d)
                         {
-                            e.Graphics.DrawLine(pen, Centrate(curves[i][j]), Centrate(curves[i + 1][j]));
+                            e.Graphics.DrawLine(pen, Centrate(curvesProj[i][j]), Centrate(curvesProj[i + 1][j]));
 
                         }
 
@@ -103,6 +109,57 @@ namespace _6
 
                     break;
 
+ 
+                case 3:
+                    {
+                        curvesProj = utils.getXZFiguresProj();
+                        List<Point3D[]> curves = utils.getFigures();
+                        for (int i =0; i <= curvesProj.Count - 2; i++)
+                        {
+                            for (int j = 0; j <= curvesProj[i].Length - 3; j++)
+                            {
+                                Point3D A = curves[i][j];
+                                Point3D B = curves[i + 1][j];
+                                Point3D C = curves[i][j + 1];
+
+                                float vx1 = A.X - B.X;
+                                float vy1 = A.Y - B.Y;
+                                float vz1 = A.Z - B.Z;
+                                float vx2 = B.X - C.X;
+                                float vy2 = B.Y - C.Y;
+                                float vz2 = B.Z - C.Z;
+
+                                Point3D N = new Point3D();
+                                N.X = vy1 * vz2 - vz1 * vy2;
+                                N.Y = vz1 * vx2 - vx1 * vz2;
+                                N.Z = vx1 * vy2 - vy1 * vx2;
+
+                                float[] pov = new float[3];
+                                pov[0] = 0.2F;
+                                pov[1] = 0;
+                                pov[2] = 0.3F;
+                                float cosAlpha = (float)((pov[0] * N.X + pov[1] * N.Y + pov[2] * N.Z) /
+                                    (Math.Sqrt(N.X * N.X + N.Y + N.Y + N.Z * N.Z) * Math.Sqrt(pov[0] * pov[0] + pov[1] * pov[1] + 
+                                    pov[2] * pov[2])));
+                                float alpha = (float)Math.Acos(cosAlpha);
+                                int c = (int)Math.Abs(255 * Math.Sin(alpha));
+                                if (c < 0) c = 0;
+                                if (c > 255) c = 255;
+                                Pen p = new Pen(Color.FromArgb(c,c,0, (int)(c * 0.7F)));
+
+                                Point[] polygon = new Point[3];
+                                 polygon[0] = Centrate(curvesProj[i][j]);
+                                  polygon[1] = Centrate(curvesProj[i + 1][j]);
+                                 polygon[2] = Centrate(curvesProj[i][j+2]);
+                                
+                                e.Graphics.DrawPolygon(p, polygon);
+
+                            }
+
+                        }
+
+                    }
+                    break;
             }
 
             if (axis)

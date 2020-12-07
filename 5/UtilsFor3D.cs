@@ -44,11 +44,12 @@ namespace _5
                     ABCD[0] /= ABCD[3];
                     ABCD[1] /= ABCD[3];
                     ABCD[2] /= ABCD[3];
-                }  /* else
+                    ABCD[3] /= ABCD[3];
+                }  else
                 {
-                    ABCD[3] = 1;
+                    ABCD[3] = 0.01f;
                 }
-                */
+                
                 for (int j = 0; j < 4; j++)
                 {
                     V[j, i] = ABCD[j];

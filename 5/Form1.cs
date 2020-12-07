@@ -35,7 +35,7 @@ namespace _5
         {
             List<Point3D[]> result = new List<Point3D[]>();
             Point3D[] poligon1 = new Point3D[3] {new Point3D(-1, 2, 0), new Point3D(2, 0, 0), new Point3D(-1, -2, 0) };
-            Point3D[] poligon2 = new Point3D[3] {new Point3D(0, 1, 0), new Point3D(1, 0, 0), new Point3D(0, -1, 0) };
+            Point3D[] poligon2 = new Point3D[3] {new Point3D(0, 1, 1), new Point3D(1, 0, 1), new Point3D(0, -1, 1) };
             Point3D[] poligon3 = new Point3D[4] {new Point3D(-1, 2, 0), new Point3D(0, 1, 1),
                 new Point3D(1, 0, 1), new Point3D(2, 0, 0) };
             Point3D[] poligon4 = new Point3D[4] {new Point3D(1, 0, 1), new Point3D(2, 0, 0),
@@ -87,17 +87,17 @@ namespace _5
                 ObliqueProjection proj = projection as ObliqueProjection;
                 figuresForDraw = utils.getObliqueProjection(proj.getAlpha(), proj.getL());
             }
-          //  float[,] pov = new float[1,4] { { 0, 0,1, 1 } };
-           // float[,] visabilityMatrix = utils.getVisibilityMatrix(pov);
+            float[,] pov = new float[1,4] { { 1000,0,0, 1 } };
+            float[,] visabilityMatrix = utils.getVisibilityMatrix(pov);
             Color[] colors = utils.getFiguresColors();
             for (int i = 0; i < figuresForDraw.Count; i++)
             {
-              //  if (visabilityMatrix[0,i] >  0)
+              //  if (visabilityMatrix[0,i] > 0 )
                // {
                     SolidBrush solidBrush = new SolidBrush(colors[i]);
                     g.DrawPolygon(new Pen(Brushes.Black), Centrate(figuresForDraw[i]));
                     g.FillPolygon(solidBrush, Centrate(figuresForDraw[i]));
-               // }
+            //   }
             }
         }
 
